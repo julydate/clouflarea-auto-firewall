@@ -24,7 +24,7 @@ apt-get install -y bc wget vim cron
 下载脚本
 
 ```shell
-wget -N --no-check-certificate https://raw.githubusercontent.com/julydate/clouflarea-auto-firewall/master/cfauto.sh /tmp/cfauto.sh && chmod +x /tmp/cfauto.sh
+wget -N --no-check-certificate https://raw.githubusercontent.com/julydate/cloudflare-auto-firewall/master/cfauto.sh /tmp/cfauto.sh && chmod +x /tmp/cfauto.sh
 ```
 
 开始一步步填写脚本里的变量
