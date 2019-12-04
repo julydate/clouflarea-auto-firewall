@@ -1,3 +1,4 @@
+#github https://github.com/CangShui/clouflarea-auto-firewall
 email="1000@qq.com"
 globalapi="7777777777777777777777777"
 rulesid1="666666666666666666666666666"
@@ -31,14 +32,14 @@ check=$(cat /proc/cpuinfo | grep "processor" | wc -l)
 
 fi
 
-if [ ! -f "/home/status.txt" ];then
-echo "" > /home/status.txt
+if [ ! -f "/tmp/cfstatus.txt" ];then
+echo "" > /tmp/cfstatus.txt
 else
-status=$(cat /home/status.txt)
+status=$(cat /tmp/cfstatus.txt)
 echo $status
 fi
 now=$(date +%s)
-time=$(date +%s -r /home/status.txt)
+time=$(date +%s -r /tmp/cfstatus.txt)
 
 
 
@@ -53,7 +54,7 @@ fi
 newtime=`expr $now - $time`
 closetime=`expr $keeptime - $newtime`
 
-if [[ $load <$check ]]&&[[ $status -eq 1 ]]&&[[ $newtime -gt $keeptime ]]   
+if [[ `echo "$check > $load" | bc` -eq 1 ]]&&[[ $status -eq 1 ]]&&[[ $newtime -gt $keeptime ]]   
 then
 echo -e "\n$mode负载低于$check，当前已开盾超过半小时($newtime秒)，尝试关盾"
 cResult=$(
@@ -76,11 +77,11 @@ echo $cResult
 size=${#cResult}
 if [[ $size -gt 10 ]]
 then
-  echo 0 > /home/status.txt
+  echo 0 > /tmp/cfstatus.txt
   echo -e "\n关盾成功"
 fi  
   
-elif [[ $load <$check ]]
+elif [[ `echo "$check > $load" | bc` -eq 1 ]]
 then
 echo -e "\n$mode负载低于$check，不做任何改变,$newtime秒"
 if [[ $status -eq 1 ]]
@@ -89,17 +90,17 @@ then
 fi                        
 exit
                       
-elif [[ $load >$check ]] && [[ $status -eq 1 ]] && [[ $newtime -gt $keeptime ]]  
+elif [[ `echo "$load > $check" | bc` -eq 1 ]] && [[ $status -eq 1 ]] && [[ $newtime -gt $keeptime ]]  
 then
 echo -e "\n$mode负载高于$check，当前已开盾超过$newtime秒，盾无效，请联系管理员定制其他方案"
 exit
   
-elif [[ $load >$check ]] && [[ $status -eq 1 ]]
+elif [[ `echo "$load > $check" | bc` -eq 1 ]] && [[ $status -eq 1 ]]
 then
 echo -e "\n$mode负载高于$check，当前已开盾($newtime秒)，请再观察"
 exit  
                       
-elif [[ $load >$check ]]
+elif [[ `echo "$load > $check" | bc` -eq 1 ]]
 then
 echo -e "\n$mode负载高于$check，开启防御规则"  
 cResult=$(
@@ -122,9 +123,9 @@ echo $cResult
 size=${#cResult}
 if [[ $size -gt 10 ]]
 then
-  echo 1 > /home/status.txt
+  echo 1 > /tmp/cfstatus.txt
   echo -e "\n开盾成功"
 fi    
 else
-echo 0 > /home/status.txt  
+echo 0 > /tmp/cfstatus.txt  
 fi
