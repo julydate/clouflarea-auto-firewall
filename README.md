@@ -1,4 +1,4 @@
-# clouflarea-auto-firewall
+# cloudflare-auto-firewall
 Auto open firewallrules
 
 详细食用方法
