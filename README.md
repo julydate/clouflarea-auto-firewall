@@ -4,6 +4,12 @@ Auto open firewallrules
 详细食用方法
 <a href="https://cangshui.net/?p=4516">https://cangshui.net/?p=4516</a>
 
+## 修改
+
+修复负载数为浮点型时无法比较大小的问题
+
+$load < $ check 必须要求两个参数全为整数，但是 $load 为浮点型，修改比较方式
+
 ## 教程
 
 下载脚本
