@@ -10,6 +10,15 @@ Auto open firewallrules
 
 $load < $ check 必须要求两个参数全为整数，但是 $load 为浮点型，修改比较方式
 
+没有安装 bc 的顺便装一下
+
+```shell
+# CentOS
+yum install -y bc wget vim cron
+# Debian/Ubuntu
+apt-get install -y bc wget vim cron
+```
+
 ## 教程
 
 下载脚本
