@@ -67,8 +67,34 @@ zoneid 这个变量打开你的域名总览页面，然后看右下角，往下�
 
 如果需要每 30s 执行一次，可以通过 crontab 中增加延迟30秒来实现
 
-```she
+```shell
 */1 * * * * /bin/bash /tmp/cfauto.sh >> /tmp/cfautolog.log 2>&1 &
 */1 * * * * sleep 30; /bin/bash /tmp/cfauto.sh >> /tmp/cfautolog.log 2>&1 &
 ```
 
+如果需要更高频率的执行可以写一个小脚本来实现
+
+```shell
+#!/bin/bash
+
+step=5 #间隔的秒数，不能大于60
+
+for (( i = 0; i < 60; i=(i+step) )); do
+    /bin/bash /tmp/cfauto.sh >> /tmp/cfautolog.log 2>&1 &
+    sleep $step
+done
+
+exit 0
+```
+
+可以直接下载脚本
+
+```shell
+wget -N --no-check-certificate https://raw.githubusercontent.com/julydate/cloudflare-auto-firewall/master/runcfauto.sh /tmp/runcfauto.sh && chmod +x /tmp/runcfauto.sh
+```
+
+然后 crontab 设置该脚本每分钟执行一次
+
+```shell
+*/1 * * * * /bin/bash /tmp/runcfauto.sh > /dev/null 2>&1 &
+```
