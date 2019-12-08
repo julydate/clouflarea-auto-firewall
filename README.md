@@ -24,7 +24,7 @@ apt-get install -y bc wget vim cron
 下载脚本
 
 ```shell
-wget -N --no-check-certificate https://raw.githubusercontent.com/julydate/cloudflare-auto-firewall/master/cfauto.sh /tmp/cfauto.sh && chmod +x /tmp/cfauto.sh
+wget -N --no-check-certificate https://raw.githubusercontent.com/julydate/cloudflare-auto-firewall/master/cfauto.sh -O /tmp/cfauto.sh && chmod +x /tmp/cfauto.sh
 ```
 
 开始一步步填写脚本里的变量
@@ -90,7 +90,7 @@ exit 0
 可以直接下载脚本
 
 ```shell
-wget -N --no-check-certificate https://raw.githubusercontent.com/julydate/cloudflare-auto-firewall/master/runcfauto.sh /tmp/runcfauto.sh && chmod +x /tmp/runcfauto.sh
+wget -N --no-check-certificate https://raw.githubusercontent.com/julydate/cloudflare-auto-firewall/master/runcfauto.sh -O /tmp/runcfauto.sh && chmod +x /tmp/runcfauto.sh
 ```
 
 然后 crontab 设置该脚本每分钟执行一次
