@@ -1,8 +1,9 @@
 # cloudflare-auto-firewall
+
 Auto open firewallrules
 
 详细食用方法
-<a href="https://cangshui.net/?p=4516">https://cangshui.net/?p=4516</a>
+<https://cangshui.net/?p=4516>
 
 ## 修改
 
@@ -17,20 +18,35 @@ $load < $ check 必须要求两个参数全为整数，但是 $load 为浮点型
 yum install -y bc wget vim cron
 # Debian/Ubuntu
 apt-get install -y bc wget vim cron
+
+# 创建目录
+mkdir -p /home/cfauto
 ```
+
+## 2022.4.22 更新
+
+增加 v2 脚本，支持 CloudFlare API Token，而不必再使用全局的 API Key
+
+下载 V2 脚本
+
+```shell
+wget -N --no-check-certificate https://raw.githubusercontent.com/julydate/cloudflare-auto-firewall/master/cfautov2.sh -O /home/cfauto/cfauto.sh && chmod +x /home/cfauto/cfauto.sh
+```
+
+以下教程为原版教程，若不知道 CloudFlare API Token 如何设置请使用以下原版
 
 ## 教程
 
 下载脚本
 
 ```shell
-wget -N --no-check-certificate https://raw.githubusercontent.com/julydate/cloudflare-auto-firewall/master/cfauto.sh -O /tmp/cfauto.sh && chmod +x /tmp/cfauto.sh
+wget -N --no-check-certificate https://raw.githubusercontent.com/julydate/cloudflare-auto-firewall/master/cfauto.sh -O /home/cfauto/cfauto.sh && chmod +x /home/cfauto/cfauto.sh
 ```
 
 开始一步步填写脚本里的变量
 
 ```shell
-vim /tmp/cfauto.sh
+vim /home/cfauto/cfauto.sh
 ```
 
 第一行的 email 变量填的是你 CloudFlare 账号的登录邮箱
@@ -62,14 +78,14 @@ zoneid 这个变量打开你的域名总览页面，然后看右下角，往下�
 配置完之后，你需要设置一个 crontab 定时任务来执行脚本，设置个1分钟就行了
 
 ```shell
-*/1 * * * * /bin/bash /tmp/cfauto.sh >> /tmp/cfautolog.log 2>&1 &
+*/1 * * * * /bin/bash /home/cfauto/cfauto.sh >> /tmp/cfautolog.log 2>&1 &
 ```
 
 如果需要每 30s 执行一次，可以通过 crontab 中增加延迟30秒来实现
 
 ```shell
-*/1 * * * * /bin/bash /tmp/cfauto.sh >> /tmp/cfautolog.log 2>&1 &
-*/1 * * * * sleep 30; /bin/bash /tmp/cfauto.sh >> /tmp/cfautolog.log 2>&1 &
+*/1 * * * * /bin/bash /home/cfauto/cfauto.sh >> /tmp/cfautolog.log 2>&1 &
+*/1 * * * * sleep 30; /bin/bash /home/cfauto/cfauto.sh >> /tmp/cfautolog.log 2>&1 &
 ```
 
 如果需要更高频率的执行可以写一个小脚本来实现
@@ -80,7 +96,7 @@ zoneid 这个变量打开你的域名总览页面，然后看右下角，往下�
 step=5 #间隔的秒数，不能大于60
 
 for (( i = 0; i < 60; i=(i+step) )); do
-    /bin/bash /tmp/cfauto.sh >> /tmp/cfautolog.log 2>&1 &
+    /bin/bash /home/cfauto/cfauto.sh >> /tmp/cfautolog.log 2>&1 &
     sleep $step
 done
 
@@ -90,11 +106,11 @@ exit 0
 可以直接下载脚本
 
 ```shell
-wget -N --no-check-certificate https://raw.githubusercontent.com/julydate/cloudflare-auto-firewall/master/runcfauto.sh -O /tmp/runcfauto.sh && chmod +x /tmp/runcfauto.sh
+wget -N --no-check-certificate https://raw.githubusercontent.com/julydate/cloudflare-auto-firewall/master/runcfauto.sh -O /home/cfauto/runcfauto.sh && chmod +x /home/cfauto/runcfauto.sh
 ```
 
 然后 crontab 设置该脚本每分钟执行一次
 
 ```shell
-*/1 * * * * /bin/bash /tmp/runcfauto.sh > /dev/null 2>&1 &
+*/1 * * * * /bin/bash /home/cfauto/runcfauto.sh > /dev/null 2>&1 &
 ```

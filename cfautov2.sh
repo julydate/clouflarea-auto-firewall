@@ -1,11 +1,10 @@
 #!/bin/bash
 #github https://github.com/CangShui/clouflarea-auto-firewall
 
-email="1000@qq.com"
-globalapi="7777777777777777777777777"
-rulesid1="666666666666666666666666666"
-rulesid2="8888888888888888888888888"
-zoneid="333333333333333333333333333"
+apitoken="-25TrYMszGtWdXuq9NiJnDxgo"
+rulesid1="298c45d2001049279271b5e91b0d9fba"
+rulesid2="5ff77516a5a84a469fdcd2c2b7647540"
+zoneid="5b5571f8c6e54740847247c9c94cc815"
 mode="cpu"  #判断服务器负载方式 load负载法  cpu  CPU百分比法  只能选一个
 keeptime=240   #开盾负载下降后持续多少秒，进行尝试关盾
 
@@ -61,8 +60,7 @@ then
 echo -e "\n$mode负载低于$check，当前已开盾超过$keeptime秒($newtime秒)，尝试关盾"
 cResult=$(
 	curl -X PUT \
-     -H "X-Auth-Email: $email" \
-     -H "X-Auth-Key: $globalapi" \
+     -H "Authorization: Bearer $apitoken" \
      -H "Content-Type: application/json" \
      -d '{
 	  "id": "$rulesid1",
@@ -107,8 +105,7 @@ then
 echo -e "\n$mode负载高于$check，开启防御规则"  
 cResult=$(
 	  curl -X PUT \
-     -H "X-Auth-Email: $email" \
-     -H "X-Auth-Key: $globalapi" \
+     -H "Authorization: Bearer $apitoken" \
      -H "Content-Type: application/json" \
      -d '{
 	  "id": "$rulesid1",
